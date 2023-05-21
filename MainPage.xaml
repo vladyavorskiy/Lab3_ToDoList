@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:exemp="using:exemp"
+             x:DataType="exemp:MainViewModel"
+             x:Class="exemp.MainPage">
+
+
+    <ContentPage.BindingContext>
+        <exemp:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" />
+            
+        </Grid.RowDefinitions>
+
+        <Entry x:Name="textBox" Grid.Row="0"></Entry>
+        <Button Text="Добавить" Grid.Row="1" Clicked="AddButton_Click" Command="{Binding AddCommand}" CommandParameter="{Binding Source={x:Reference textBox}, Path = Text}" />
+        <Picker Grid.Row="2" ItemsSource="{Binding Colors}"  SelectedItem="{Binding SelectedColor}" />
+        <ListView x:Name="listView" Grid.Row="3"  ItemsSource="{Binding Items}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="exemp:ItemViewModel">
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" BackgroundColor="{Binding CatColor.Value}" />
+                            <Label Grid.Column="2" BackgroundColor="{Binding CatColor.Value}" />
+                            <Label Text="{Binding Number}" Grid.Column="1" BackgroundColor="{Binding CatColor.Value}"/>
+                            <Label Text="{Binding Text }" Grid.Column="3" BackgroundColor="{Binding CatColor.Value}" />
+                            <Button Text="Удалить" CommandParameter="{Binding .}" Grid.Column="4" BackgroundColor="#FF5D42" TextColor="White">
+                                <Button.Command>
+                                    <Binding Path="BindingContext.DeleteCommand" Source="{x:Reference listView}" />
+                                </Button.Command>
+                            </Button>
+                            <Button Text="Готово" CommandParameter="{Binding .}" Grid.Column="5" BackgroundColor="{Binding BackgroundColor}" TextColor="White">
+                                <Button.Command>
+                                    <Binding Path="BindingContext.DoneCommand" Source="{x:Reference listView}" />
+                                </Button.Command>
+                            </Button>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+    
+
+</ContentPage>
